@@ -1,36 +1,54 @@
--- AUTO LOCK FLOOR MODULE
-
 local Players = game:GetService("Players")
 local player = Players.LocalPlayer
-local char = player.Character or player.CharacterAdded:Wait()
-local root = char:WaitForChild("HumanoidRootPart")
 
-getgenv().AutoLockFloor = false
+getgenv().KDBFeatures["Auto Lock Floor"] = {
+Enabled = false
+}
+
+local feature = getgenv().KDBFeatures["Auto Lock Floor"]
 
 task.spawn(function()
+
 	while true do
-		if getgenv().AutoLockFloor then
-			
-			for _,base in pairs(workspace.MAP_Game.Bases:GetChildren()) do
+	
+		if feature.Enabled then
+		
+			local char = player.Character
+			if char then
 				
-				local toothpaste = base:FindFirstChild("Toothpaste")
+				local root = char:FindFirstChild("HumanoidRootPart")
 				
-				if toothpaste then
-					local stand = toothpaste:FindFirstChild("StandButtons")
+				if root then
 					
-					if stand then
-						local lock = stand:FindFirstChild("Lock")
+					for _,base in pairs(workspace.MAP_Game.Bases:GetChildren()) do
 						
-						if lock then
-							local floor = lock:FindFirstChild("Floor1")
+						local toothpaste = base:FindFirstChild("Toothpaste")
+						
+						if toothpaste then
 							
-							if floor and floor:IsA("BasePart") then
-								firetouchinterest(root, floor, 0)
-								firetouchinterest(root, floor, 1)
+							local stand = toothpaste:FindFirstChild("StandButtons")
+							
+							if stand then
+								
+								local lock = stand:FindFirstChild("Lock")
+								
+								if lock then
+									
+									local floor = lock:FindFirstChild("Floor1")
+									
+									if floor then
+										firetouchinterest(root, floor, 0)
+										firetouchinterest(root, floor, 1)
+									end
+									
+								end
+								
 							end
 							
 						end
+						
 					end
+					
 				end
 				
 			end
@@ -38,5 +56,7 @@ task.spawn(function()
 		end
 		
 		task.wait(0.2)
+		
 	end
+
 end)
