@@ -1,44 +1,38 @@
+print("AutoCollect Loaded")
+
 local Players = game:GetService("Players")
 local player = Players.LocalPlayer
 
-getgenv().KDBFeatures["Auto Collect"] = {
-Enabled = false
-}
-
-local feature = getgenv().KDBFeatures["Auto Collect"]
+getgenv().AutoCollect = false
 
 task.spawn(function()
 
 	while true do
 	
-		if feature.Enabled then
+		if getgenv().AutoCollect then
 		
 			local char = player.Character
-			if char then
-				
-				local root = char:FindFirstChild("HumanoidRootPart")
-				
-				if root then
+			local root = char and char:FindFirstChild("HumanoidRootPart")
+			
+			if root then
+			
+				for _,base in pairs(workspace.MAP_Game.Bases:GetChildren()) do
 					
-					for _,base in pairs(workspace.MAP_Game.Bases:GetChildren()) do
+					local toothpaste = base:FindFirstChild("Toothpaste")
+					
+					if toothpaste then
 						
-						local toothpaste = base:FindFirstChild("Toothpaste")
+						local slots = toothpaste:FindFirstChild("Slots")
 						
-						if toothpaste then
+						if slots then
 							
-							local slots = toothpaste:FindFirstChild("Slots")
-							
-							if slots then
+							for _,slot in pairs(slots:GetChildren()) do
 								
-								for _,slot in pairs(slots:GetChildren()) do
-									
-									local collect = slot:FindFirstChild("Recolect")
-									
-									if collect then
-										firetouchinterest(root, collect, 0)
-										firetouchinterest(root, collect, 1)
-									end
-									
+								local collect = slot:FindFirstChild("Recolect")
+								
+								if collect then
+									firetouchinterest(root, collect, 0)
+									firetouchinterest(root, collect, 1)
 								end
 								
 							end
