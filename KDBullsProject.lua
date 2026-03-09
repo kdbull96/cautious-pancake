@@ -37,6 +37,26 @@ title.Text = "KDBULLS HUB"
 title.BackgroundColor3 = Color3.fromRGB(40,40,40)
 title.TextColor3 = Color3.new(1,1,1)
 
+-- HIDE BUTTON
+local hide = Instance.new("TextButton", main)
+hide.Size = UDim2.new(0,30,0,30)
+hide.Position = UDim2.new(1,-30,0,0)
+hide.Text = "-"
+hide.BackgroundColor3 = Color3.fromRGB(80,80,80)
+hide.TextColor3 = Color3.new(1,1,1)
+
+-- BUBBLE BUTTON (saat hide)
+local bubble = Instance.new("TextButton", gui)
+bubble.Size = UDim2.new(0,120,0,40)
+bubble.Position = UDim2.new(0,20,0.5,0)
+bubble.Text = "OPEN HUB"
+bubble.BackgroundColor3 = Color3.fromRGB(40,40,40)
+bubble.TextColor3 = Color3.new(1,1,1)
+bubble.Visible = false
+bubble.Active = true
+bubble.Draggable = true
+
+
 -- AUTO COLLECT BUTTON
 local collect = Instance.new("TextButton", main)
 collect.Size = UDim2.new(0.8,0,0,40)
@@ -79,5 +99,23 @@ lock.MouseButton1Click:Connect(function()
 		lock.Text = "Auto Lock Floor : OFF"
 		lock.BackgroundColor3 = Color3.fromRGB(120,0,0)
 	end
+
+end)
+
+
+-- HIDE FUNCTION
+hide.MouseButton1Click:Connect(function()
+
+	main.Visible = false
+	bubble.Visible = true
+
+end)
+
+
+-- OPEN AGAIN
+bubble.MouseButton1Click:Connect(function()
+
+	main.Visible = true
+	bubble.Visible = false
 
 end)
