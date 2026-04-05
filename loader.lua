@@ -1,7 +1,7 @@
 local placeId = game.PlaceId
 
 local games = {
-    [1775411365171] = "UpgradeALuckyBlock"
+    [110308882298123] = "UpgradeALuckyBlock"
 }
 
 local gameName = games[placeId]
