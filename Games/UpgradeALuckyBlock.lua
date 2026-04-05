@@ -171,20 +171,24 @@ local function doCollect()
     end
 end
 
-local function doUpgrade()
-    remotes.StartUpgrade:InvokeServer(false)
+local upgrading = false
 
-    task.wait(0.2)
+local function doUpgrade()
+    if upgrading then return end
+    upgrading = true
 
     pcall(function()
-        remotes.TriggerUpgradeRoll:FireServer({
-            priority = 100
-        })
+        remotes.StartUpgrade:InvokeServer(false)
     end)
 
-    task.wait(0.2)
+    -- shorter + randomized delay (more natural)
+    task.wait(math.random(25,45)/100)
 
-    remotes.StartUpgradePhase2:FireServer()
+    pcall(function()
+        remotes.StartUpgradePhase2:FireServer()
+    end)
+
+    upgrading = false
 end
 
 --// MAIN LOOP
