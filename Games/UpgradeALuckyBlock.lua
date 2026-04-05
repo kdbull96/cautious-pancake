@@ -132,8 +132,39 @@ createSlider("Collect Delay", 110, 0.05, 2, 0.3, function(v) collectDelay = v en
 createSlider("Upgrade Delay", 140, 0.1, 3, 0.5, function(v) upgradeDelay = v end)
 
 --// FUNCTIONS
+local function getMyPlot()
+    local map = workspace:FindFirstChild("Map")
+    if not map then return nil end
+
+    local closestPlot = nil
+    local shortestDistance = math.huge
+
+    for _, plot in pairs(map:GetChildren()) do
+        if plot:IsA("Model") then
+            local basePart = plot:FindFirstChildWhichIsA("BasePart")
+            if basePart then
+                local dist = (hrp.Position - basePart.Position).Magnitude
+                if dist < shortestDistance then
+                    shortestDistance = dist
+                    closestPlot = plot
+                end
+            end
+        end
+    end
+
+    return closestPlot
+end
+
+local myPlot = nil
+
 local function doCollect()
-    for _, obj in pairs(workspace:GetDescendants()) do
+    if not myPlot or not myPlot.Parent then
+        myPlot = getMyPlot()
+    end
+
+    if not myPlot then return end
+
+    for _, obj in pairs(myPlot:GetDescendants()) do
         if obj:IsA("TouchTransmitter") then
             local part = obj.Parent
             if part and part:IsA("BasePart") then
@@ -166,11 +197,15 @@ task.spawn(function()
         if autoCollect then
             pcall(doCollect)
         end
+        task.wait(collectDelay)
+    end
+end)
 
+task.spawn(function()
+    while true do
         if autoUpgrade then
             pcall(doUpgrade)
         end
-
-        task.wait(math.min(collectDelay, upgradeDelay))
+        task.wait(upgradeDelay)
     end
 end)
