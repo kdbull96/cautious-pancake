@@ -132,46 +132,42 @@ createSlider("Collect Delay", 110, 0.05, 2, 0.3, function(v) collectDelay = v en
 createSlider("Upgrade Delay", 140, 0.1, 3, 0.5, function(v) upgradeDelay = v end)
 
 --// FUNCTIONS
-local function getMyPlot()
-    local map = workspace:FindFirstChild("Map")
-    if not map then return nil end
+local basePart = workspace:WaitForChild("Map"):WaitForChild("AreaLimitPart")
 
-    local closestPlot = nil
-    local shortestDistance = math.huge
+local cachedTouches = {}
 
-    for _, plot in pairs(map:GetChildren()) do
-        if plot:IsA("Model") then
-            local basePart = plot:FindFirstChildWhichIsA("BasePart")
-            if basePart then
-                local dist = (hrp.Position - basePart.Position).Magnitude
-                if dist < shortestDistance then
-                    shortestDistance = dist
-                    closestPlot = plot
+local function isInsideBase(part)
+    local relative = basePart.CFrame:PointToObjectSpace(part.Position)
+    local size = basePart.Size / 2
+
+    return math.abs(relative.X) <= size.X
+        and math.abs(relative.Z) <= size.Z
+end
+
+-- build cache
+task.spawn(function()
+    while true do
+        cachedTouches = {}
+
+        for _, obj in pairs(workspace:GetDescendants()) do
+            if obj:IsA("TouchTransmitter") then
+                local part = obj.Parent
+                if part and part:IsA("BasePart") then
+                    if isInsideBase(part) then
+                        table.insert(cachedTouches, part)
+                    end
                 end
             end
         end
+
+        task.wait(5)
     end
-
-    return closestPlot
-end
-
-local myPlot = nil
+end)
 
 local function doCollect()
-    if not myPlot or not myPlot.Parent then
-        myPlot = getMyPlot()
-    end
-
-    if not myPlot then return end
-
-    for _, obj in pairs(myPlot:GetDescendants()) do
-        if obj:IsA("TouchTransmitter") then
-            local part = obj.Parent
-            if part and part:IsA("BasePart") then
-                firetouchinterest(hrp, part, 0)
-                firetouchinterest(hrp, part, 1)
-            end
-        end
+    for _, part in pairs(cachedTouches) do
+        firetouchinterest(hrp, part, 0)
+        firetouchinterest(hrp, part, 1)
     end
 end
 
