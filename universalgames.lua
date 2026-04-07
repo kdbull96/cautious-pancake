@@ -258,6 +258,74 @@ local function CreateSlider(page, text, min, max, default, callback)
     
     local dragging = false
     local function updateSlider(input)
+-- === UI COMPONENT FUNCTIONS ===
+local function CreateToggle(page, text, callback)
+    local btn = Instance.new("TextButton")
+    btn.Size = UDim2.new(1, 0, 0, 35)
+    btn.BackgroundColor3 = Color3.fromRGB(240, 240, 240) -- Light Gray Button
+    btn.TextColor3 = Color3.fromRGB(60, 60, 60)
+    btn.Font = Enum.Font.Gotham
+    btn.TextSize = 13
+    btn.Text = "  " .. text
+    btn.TextXAlignment = Enum.TextXAlignment.Left
+    btn.Parent = page
+    Instance.new("UICorner", btn).CornerRadius = UDim.new(0, 4)
+    
+    local Status = Instance.new("Frame")
+    Status.Size = UDim2.new(0, 10, 0, 10)
+    Status.Position = UDim2.new(1, -20, 0.5, -5)
+    Status.BackgroundColor3 = Color3.fromRGB(200, 200, 200) -- Default Off (Gray)
+    Status.Parent = btn
+    Instance.new("UICorner", Status).CornerRadius = UDim.new(1, 0)
+
+    local enabled = false
+    btn.MouseButton1Click:Connect(function()
+        enabled = not enabled
+        Status.BackgroundColor3 = enabled and Color3.fromRGB(100, 200, 100) or Color3.fromRGB(200, 200, 200)
+        callback(enabled)
+    end)
+end
+
+local function CreateSlider(page, text, min, max, default, callback)
+    local sliderFrame = Instance.new("Frame")
+    sliderFrame.Size = UDim2.new(1, 0, 0, 45)
+    sliderFrame.BackgroundColor3 = Color3.fromRGB(240, 240, 240)
+    sliderFrame.Parent = page
+    Instance.new("UICorner", sliderFrame).CornerRadius = UDim.new(0, 4)
+    
+    local title = Instance.new("TextLabel")
+    title.Size = UDim2.new(1, -10, 0, 20)
+    title.Position = UDim2.new(0, 10, 0, 5)
+    title.BackgroundTransparency = 1
+    title.TextColor3 = Color3.fromRGB(60, 60, 60)
+    title.Font = Enum.Font.Gotham
+    title.TextSize = 13
+    title.TextXAlignment = Enum.TextXAlignment.Left
+    title.Text = text .. " : " .. tostring(default)
+    title.Parent = sliderFrame
+    
+    local slideBg = Instance.new("Frame")
+    slideBg.Size = UDim2.new(1, -20, 0, 8)
+    slideBg.Position = UDim2.new(0, 10, 0, 28)
+    slideBg.BackgroundColor3 = Color3.fromRGB(220, 220, 220)
+    slideBg.Parent = sliderFrame
+    Instance.new("UICorner", slideBg).CornerRadius = UDim.new(1, 0)
+    
+    local fill = Instance.new("Frame")
+    local startWidth = (default - min) / (max - min)
+    fill.Size = UDim2.new(startWidth, 0, 1, 0)
+    fill.BackgroundColor3 = Color3.fromRGB(100, 100, 100) -- Dark Gray fill
+    fill.Parent = slideBg
+    Instance.new("UICorner", fill).CornerRadius = UDim.new(1, 0)
+    
+    local btn = Instance.new("TextButton")
+    btn.Size = UDim2.new(1, 0, 1, 0)
+    btn.BackgroundTransparency = 1
+    btn.Text = ""
+    btn.Parent = slideBg
+    
+    local dragging = false
+    local function updateSlider(input)
         local pos = math.clamp((input.Position.X - slideBg.AbsolutePosition.X) / slideBg.AbsoluteSize.X, 0, 1)
         fill.Size = UDim2.new(pos, 0, 1, 0)
         local value = math.floor(min + ((max - min) * pos))
@@ -266,42 +334,36 @@ local function CreateSlider(page, text, min, max, default, callback)
     end
     
     btn.InputBegan:Connect(function(input)
-        if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
-            dragging = true
-            updateSlider(input)
-        end
+        if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then dragging = true; updateSlider(input) end
     end)
     btn.InputEnded:Connect(function(input)
-        if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
-            dragging = false
-        end
+        if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then dragging = false end
     end)
     UserInputService.InputChanged:Connect(function(input)
-        if dragging and (input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch) then
-            updateSlider(input)
-        end
+        if dragging and (input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch) then updateSlider(input) end
     end)
 end
 
 local function CreateTextBox(page, placeholder, callback)
     local boxFrame = Instance.new("Frame")
     boxFrame.Size = UDim2.new(1, 0, 0, 35)
-    boxFrame.BackgroundColor3 = Color3.fromRGB(20, 20, 25)
+    boxFrame.BackgroundColor3 = Color3.fromRGB(240, 240, 240)
     boxFrame.Parent = page
     Instance.new("UICorner", boxFrame).CornerRadius = UDim.new(0, 4)
     
     local stroke = Instance.new("UIStroke", boxFrame)
-    stroke.Color = Color3.fromRGB(138, 43, 226)
+    stroke.Color = Color3.fromRGB(180, 180, 180)
     stroke.Thickness = 1
 
     local box = Instance.new("TextBox")
     box.Size = UDim2.new(1, -10, 1, 0)
     box.Position = UDim2.new(0, 5, 0, 0)
     box.BackgroundTransparency = 1
-    box.TextColor3 = Color3.fromRGB(255, 255, 255)
+    box.TextColor3 = Color3.fromRGB(30, 30, 30)
     box.Font = Enum.Font.Gotham
     box.TextSize = 13
     box.PlaceholderText = placeholder
+    box.PlaceholderColor3 = Color3.fromRGB(150, 150, 150)
     box.Text = ""
     box.TextXAlignment = Enum.TextXAlignment.Left
     box.ClearTextOnFocus = false
@@ -315,8 +377,8 @@ end
 local function CreateButton(page, text, callback)
     local btn = Instance.new("TextButton")
     btn.Size = UDim2.new(1, 0, 0, 35)
-    btn.BackgroundColor3 = Color3.fromRGB(138, 43, 226)
-    btn.TextColor3 = Color3.fromRGB(255, 255, 255)
+    btn.BackgroundColor3 = Color3.fromRGB(220, 220, 220) -- Gray Button
+    btn.TextColor3 = Color3.fromRGB(30, 30, 30)
     btn.Font = Enum.Font.GothamBold
     btn.TextSize = 13
     btn.Text = text
@@ -333,7 +395,7 @@ local VisualsPage = CreateTab("Visuals")
 local TrollPage = CreateTab("Troll")
 
 -- Default Tab
-Tabs[1].TextColor3 = Color3.fromRGB(138, 43, 226)
+Tabs[1].TextColor3 = Color3.fromRGB(30, 30, 30)
 Pages[1].Visible = true
 
 local function GetChar() return LocalPlayer.Character or LocalPlayer.CharacterAdded:Wait() end
