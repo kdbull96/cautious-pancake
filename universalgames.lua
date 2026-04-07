@@ -48,8 +48,8 @@ end
 local ToggleBtn = Instance.new("TextButton")
 ToggleBtn.Size = UDim2.new(0, 50, 0, 50)
 ToggleBtn.Position = UDim2.new(0, 15, 0.5, -25)
-ToggleBtn.BackgroundColor3 = Color3.fromRGB(15, 15, 20)
-ToggleBtn.TextColor3 = Color3.fromRGB(138, 43, 226) -- Gemini Purple
+ToggleBtn.BackgroundColor3 = Color3.fromRGB(245, 245, 245) -- Very Light Gray
+ToggleBtn.TextColor3 = Color3.fromRGB(50, 50, 50) -- Dark Gray Text
 ToggleBtn.Font = Enum.Font.GothamBlack
 ToggleBtn.TextSize = 26
 ToggleBtn.Text = "G"
@@ -61,7 +61,7 @@ ToggleCorner.CornerRadius = UDim.new(1, 0)
 ToggleCorner.Parent = ToggleBtn
 
 local ToggleStroke = Instance.new("UIStroke")
-ToggleStroke.Color = Color3.fromRGB(138, 43, 226)
+ToggleStroke.Color = Color3.fromRGB(180, 180, 180) -- Gray Stroke
 ToggleStroke.Thickness = 2
 ToggleStroke.Parent = ToggleBtn
 
@@ -71,7 +71,7 @@ MakeDraggable(ToggleBtn, ToggleBtn)
 local MainFrame = Instance.new("Frame")
 MainFrame.Size = UDim2.new(0, 420, 0, 260)
 MainFrame.Position = UDim2.new(0.5, -210, 0.5, -130)
-MainFrame.BackgroundColor3 = Color3.fromRGB(15, 15, 20)
+MainFrame.BackgroundColor3 = Color3.fromRGB(250, 250, 250) -- White/Gray Main Background
 MainFrame.BorderSizePixel = 0
 MainFrame.ClipsDescendants = true
 MainFrame.Visible = false
@@ -82,14 +82,14 @@ MainCorner.CornerRadius = UDim.new(0, 10)
 MainCorner.Parent = MainFrame
 
 local MainStroke = Instance.new("UIStroke")
-MainStroke.Color = Color3.fromRGB(138, 43, 226)
+MainStroke.Color = Color3.fromRGB(200, 200, 200)
 MainStroke.Thickness = 1
 MainStroke.Parent = MainFrame
 
 -- Top Bar
 local TopBar = Instance.new("Frame")
 TopBar.Size = UDim2.new(1, 0, 0, 30)
-TopBar.BackgroundColor3 = Color3.fromRGB(20, 20, 25)
+TopBar.BackgroundColor3 = Color3.fromRGB(235, 235, 235) -- Gray Header
 TopBar.BorderSizePixel = 0
 TopBar.Parent = MainFrame
 MakeDraggable(TopBar, MainFrame)
@@ -98,10 +98,10 @@ local Title = Instance.new("TextLabel")
 Title.Size = UDim2.new(1, -10, 1, 0)
 Title.Position = UDim2.new(0, 15, 0, 0)
 Title.BackgroundTransparency = 1
-Title.TextColor3 = Color3.fromRGB(138, 43, 226)
+Title.TextColor3 = Color3.fromRGB(50, 50, 50) -- Dark Text
 Title.Font = Enum.Font.GothamBold
 Title.TextSize = 14
-Title.Text = "Gemini Hub Complete"
+Title.Text = "Gemini Hub Clean"
 Title.TextXAlignment = Enum.TextXAlignment.Left
 Title.Parent = TopBar
 
