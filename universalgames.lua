@@ -132,7 +132,7 @@ end)
 local Sidebar = Instance.new("Frame")
 Sidebar.Size = UDim2.new(0, 110, 1, -30)
 Sidebar.Position = UDim2.new(0, 0, 0, 30)
-Sidebar.BackgroundColor3 = Color3.fromRGB(20, 20, 25)
+Sidebar.BackgroundColor3 = Color3.fromRGB(235, 235, 235) -- Gray Sidebar
 Sidebar.BorderSizePixel = 0
 Sidebar.Parent = MainFrame
 
@@ -152,8 +152,8 @@ local Pages = {}
 local function CreateTab(tabName)
     local TabBtn = Instance.new("TextButton")
     TabBtn.Size = UDim2.new(1, 0, 0, 35)
-    TabBtn.BackgroundColor3 = Color3.fromRGB(20, 20, 25)
-    TabBtn.TextColor3 = Color3.fromRGB(150, 150, 150)
+    TabBtn.BackgroundColor3 = Color3.fromRGB(235, 235, 235)
+    TabBtn.TextColor3 = Color3.fromRGB(130, 130, 130) -- Inactive Gray Text
     TabBtn.Font = Enum.Font.GothamSemibold
     TabBtn.TextSize = 13
     TabBtn.Text = tabName
@@ -165,7 +165,7 @@ local function CreateTab(tabName)
     Page.Position = UDim2.new(0, 5, 0, 5)
     Page.BackgroundTransparency = 1
     Page.ScrollBarThickness = 2
-    Page.ScrollBarImageColor3 = Color3.fromRGB(138, 43, 226)
+    Page.ScrollBarImageColor3 = Color3.fromRGB(150, 150, 150) -- Gray Scrollbar
     Page.Visible = false
     Page.Parent = ContentArea
     
@@ -181,9 +181,9 @@ local function CreateTab(tabName)
     table.insert(Pages, Page)
     
     TabBtn.MouseButton1Click:Connect(function()
-        for _, t in pairs(Tabs) do t.TextColor3 = Color3.fromRGB(150, 150, 150) end
+        for _, t in pairs(Tabs) do t.TextColor3 = Color3.fromRGB(130, 130, 130) end
         for _, p in pairs(Pages) do p.Visible = false end
-        TabBtn.TextColor3 = Color3.fromRGB(138, 43, 226)
+        TabBtn.TextColor3 = Color3.fromRGB(30, 30, 30) -- Active Black Text
         Page.Visible = true
     end)
     
